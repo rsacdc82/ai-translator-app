@@ -74,7 +74,7 @@ def convert_text_to_speech(text: str, lang_code: str) -> Optional[io.BytesIO]:
         audio_fp.seek(0)
         return audio_fp
     except Exception as e:
-        st.error(fSpeech Conversion Error (gTTS) The language code '{lang_code}' might not be supported for speech. Error {e})
+        st.error(f"Speech Conversion Error (gTTS) The language code '{lang_code}' might not be supported for speech. Error {e}")
         return None
 
 def extract_text_from_uploaded_file(uploaded_file Any) - Optional[str]
@@ -249,6 +249,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
