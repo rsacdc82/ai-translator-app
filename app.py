@@ -103,7 +103,7 @@ def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
         
         elif file_extension in ['csv', 'xlsx']:
             # Use pandas for tabular data
-            if file_extension == 'csv'
+            if file_extension == 'csv':
                 df = pd.read_csv(uploaded_file)
             else # xlsx
                 df = pd.read_excel(uploaded_file)
@@ -257,6 +257,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
