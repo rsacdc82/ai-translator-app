@@ -1,0 +1,8 @@
+## requirements.txt
+## A list of packages required to run the Streamlit AI Translator & Speech App
+
+streamlit
+google-genai
+gtts
+pandas
+pypdf
