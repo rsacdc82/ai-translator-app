@@ -34,9 +34,9 @@ ALLOWED_EXTENSIONS = ['pdf', 'txt', 'csv', 'xlsx']
 def translate_text_with_gemini(api_key: str, text: str, target_language: str) -> Optional[str]:
     """Uses the Gemini API to translate text."""
     
-    if not text:
+    if not text:  # <-- CORRECT: Add the colon
         return None
-    try
+    try:
         # Initialize the Gemini client
         client = genai.Client(api_key=api_key)
 
@@ -243,6 +243,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
