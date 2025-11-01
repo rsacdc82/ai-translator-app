@@ -99,7 +99,7 @@ def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
         # 8 SPACES INDENTATION
             reader = pypdf.PdfReader(uploaded_file)
             for page in reader.pages:
-                text_content += page.extract_text() or 
+                text_content += page.extract_text() or ""
         
         elif file_extension in ['csv', 'xlsx']
             # Use pandas for tabular data
@@ -257,6 +257,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
