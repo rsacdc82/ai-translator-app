@@ -12,19 +12,19 @@ from typing import Dict, Any, Optional
 # Define supported languages and their ISO 639-1 codes for gTTS and for display
 # gTTS often uses the simplified two-letter code for the primary language.
 # The Gemini prompt will handle the translation to the full language name.
-LANGUAGE_CODES = {
-    "Spanish" es,
-    "French" fr,
-    "German" de,
-    "Italian" it,
-    "Japanese" ja,
-    "Korean" ko,
-    "Portuguese" pt,
-    "Russian" ru,
-    "Chinese (Mandarin)" zh-cn,
-    "Hindi" hi,
-    "Arabic" ar,
-    "English" en
+LANGUAGE_CODES: Dict[str, str] = {
+    "Spanish": "es",       # <-- Correct: Key : Value
+    "French": "fr",        # <-- Correct: Key : Value
+    "German": "de",
+    "Italian": "it",
+    "Japanese": "ja",
+    "Korean": "ko",
+    "Portuguese": "pt",
+    "Russian": "ru",
+    "Chinese (Mandarin)": "zh-cn",
+    "Hindi": "hi",
+    "Arabic": "ar",
+    "English": "en"
     # Add more languages as needed, checking gTTS support
 }
 
@@ -242,6 +242,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
