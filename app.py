@@ -78,7 +78,7 @@ def convert_text_to_speech(text: str, lang_code: str) -> Optional[io.BytesIO]:
         return None
 
 def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
-    Extracts text content from various file types.
+    #Extracts text content from various file types.
     file_extension = uploaded_file.name.split('.')[-1].lower()
     text_content = 
 
@@ -249,6 +249,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
