@@ -44,13 +44,13 @@ def translate_text_with_gemini(api_key: str, text: str, target_language: str) ->
             model="gemini-2.5-flash",
             contents=prompt
         )
-        return response.text
+       response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt
+        )
+        return response.text 
         
     except Exception as e:
-        st.error(f"An API error occurred: {e}")
-        return None            contents=prompt
-        )
-
         return response.text.strip()
     except Exception as e
         st.error(fTranslation Error (Gemini API) {e})
@@ -245,6 +245,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
