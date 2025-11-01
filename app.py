@@ -115,7 +115,7 @@ def extract_text_from_uploaded_file(uploaded_file Any) - Optional[str]
 
 def main()
     st.set_page_config(page_title=Universal AI Translator & Speaker, layout=wide)
-    st.title(🗣️ Universal AI Translator & Speaker)
+    st.title(Universal AI Translator & Speaker)
     st.markdown(
         Translate text instantly using the power of Google Gemini, then convert the translation to speech and download the audio!
     )
@@ -240,4 +240,5 @@ def main()
              st.warning(Speech could not be generated for this translation.)
 
 if __name__ == __main__
+
     main()
