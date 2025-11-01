@@ -80,15 +80,20 @@ def convert_text_to_speech(text: str, lang_code: str) -> Optional[io.BytesIO]:
 def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
     #Extracts text content from various file types.
     file_extension = uploaded_file.name.split('.')[-1].lower()
-    text_content = 
-
-    try
-        if file_extension == 'txt'
-            # Decode as string
-            text_content = uploaded_file.read().decode(utf-8)
+    if uploaded_file.name.endswith(".pdf"):
+        # CORRECT: Complete the assignment by calling the reader function
+        text_content = read_pdf_content(uploaded_file) 
         
-        elif file_extension == 'pdf'
-            # Use pypdf to read the PDF
+    elif uploaded_file.name.endswith(".txt"):
+        # You'll need to read text files as strings
+        # Streamlit's UploadedFile object is used as a buffer.
+        text_content = uploaded_file.getvalue().decode("utf-8")
+        
+    else:
+        st.error("Unsupported file type. Please upload a PDF or TXT file.")
+        return None
+        
+    return text_content            # Use pypdf to read the PDF
             reader = pypdf.PdfReader(uploaded_file)
             for page in reader.pages
                 text_content += page.extract_text() or 
@@ -249,6 +254,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
