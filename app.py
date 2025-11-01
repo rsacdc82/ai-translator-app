@@ -12,7 +12,7 @@ from typing import Dict, Any, Optional
 # Define supported languages and their ISO 639-1 codes for gTTS and for display
 # gTTS often uses the simplified two-letter code for the primary language.
 # The Gemini prompt will handle the translation to the full language name.
-LANGUAGE_CODES Dict[str, str] = {
+LANGUAGE_CODES = {
     Spanish es,
     French fr,
     German de,
@@ -242,4 +242,5 @@ def main()
 if __name__ == __main__
 
     main()
+
 
