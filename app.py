@@ -41,8 +41,7 @@ def translate_text_with_gemini(api_key: str, text: str, target_language: str) ->
         client = genai.Client(api_key=api_key)
 
         # Craft a clear prompt for translation
-        prompt = fTranslate the following text into {target_language}.nnText {text}
-
+prompt = f"Translate the following text into {target_language}.\n\nText: {text}"
         # Call the Gemini API for translation
         response = client.models.generate_content(
             model='gemini-2.5-flash', # Fast model, great for translation
@@ -243,6 +242,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
