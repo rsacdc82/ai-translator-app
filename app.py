@@ -105,8 +105,13 @@ def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
             # Use pandas for tabular data
             if file_extension == 'csv':
                 df = pd.read_csv(uploaded_file)
-            else : xlsx
-                df = pd.read_excel(uploaded_file)
+            elif uploaded_file.name.endswith((".xlsx", ".xls")):
+        # 8 SPACES INDENTATION
+                df = pd.read_excel(uploaded_file) 
+        
+        # ... logic to convert DataFrame (df) to text content
+        # For example:
+        text_content = df.to_csv(sep='\t', index=False, header=True)
             
             # Convert DataFrame to a single string for translation (simple approach)
             text_content = df.to_string(index=False)
@@ -257,6 +262,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
