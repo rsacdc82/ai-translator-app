@@ -43,7 +43,7 @@ def translate_text_with_gemini(api_key: str, text: str, target_language: str) ->
         )
         return response.text
     except Exception as e:
-    t.error(f"An API error occurred: {e}")
+    st.error(f"An API error occurred: {e}")
     return None
         
     except Exception as e:
@@ -241,6 +241,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
