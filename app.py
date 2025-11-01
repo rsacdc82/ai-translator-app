@@ -32,13 +32,6 @@ LANGUAGE_CODES: Dict[str, str] = {
 ALLOWED_EXTENSIONS = ['pdf', 'txt', 'csv', 'xlsx']
 
 def translate_text_with_gemini(api_key: str, text: str, target_language: str) -> Optional[str]:
-    # ... checks ...
-    try:
-      
-        client = genai.Client(api_key=api_key)
-      
-
-def translate_text_with_gemini(api_key: str, text: str, target_language: str) -> Optional[str]:
     if not text:
         return None
     try:
@@ -248,6 +241,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
