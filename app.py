@@ -42,9 +42,14 @@ def translate_text_with_gemini(api_key: str, text: str, target_language: str) ->
             contents=prompt
         )
         return response.text
-    except Exception as e:
-    st.error(f"An API error occurred: {e}")
-    return None
+  # app.py (around lines 45-47)
+
+    except Exception as e: # <-- Line 45
+        # 4 SPACES OF INDENTATION: Correct the typo to 'st.error'
+        st.error(f"An API error occurred: {e}") 
+        
+        # 4 SPACES OF INDENTATION: The return statement belongs here
+        return None
         
     except Exception as e:
         return response.text.strip()
@@ -241,6 +246,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
