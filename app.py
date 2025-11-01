@@ -59,7 +59,7 @@ def translate_text_with_gemini(api_key: str, text: str, target_language: str) ->
 
 def convert_text_to_speech(text: str, lang_code: str) -> Optional[io.BytesIO]:
 """Converts text to speech using gTTS and returns an audio BytesIO object."""
-if not text
+    if not text
         return None
     try
         # gTTS object - the 'lang_code' must be a supported ISO 639-1 code
@@ -246,6 +246,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
