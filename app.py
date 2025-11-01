@@ -13,18 +13,18 @@ from typing import Dict, Any, Optional
 # gTTS often uses the simplified two-letter code for the primary language.
 # The Gemini prompt will handle the translation to the full language name.
 LANGUAGE_CODES = {
-    Spanish es,
-    French fr,
-    German de,
-    Italian it,
-    Japanese ja,
-    Korean ko,
-    Portuguese pt,
-    Russian ru,
-    Chinese (Mandarin) zh-cn,
-    Hindi hi,
-    Arabic ar,
-    English en
+    "Spanish" es,
+    "French" fr,
+    "German" de,
+    "Italian" it,
+    "Japanese" ja,
+    "Korean" ko,
+    "Portuguese" pt,
+    "Russian" ru,
+    "Chinese (Mandarin)" zh-cn,
+    "Hindi" hi,
+    "Arabic" ar,
+    "English" en
     # Add more languages as needed, checking gTTS support
 }
 
@@ -242,5 +242,6 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
