@@ -54,7 +54,7 @@ def translate_text_with_gemini(api_key: str, text: str, target_language: str) ->
     except Exception as e:
         return response.text.strip()
     except Exception as e:
-        st.error(fTranslation Error (Gemini API) {e})
+        st.error(f"Translation Error (Gemini API): {e}")
         return None
 
 def convert_text_to_speech(text str, lang_code str) - Optional[io.BytesIO]
@@ -246,6 +246,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
