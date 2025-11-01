@@ -101,7 +101,7 @@ def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
             for page in reader.pages:
                 text_content += page.extract_text() or ""
         
-        elif file_extension in ['csv', 'xlsx']
+        elif file_extension in ['csv', 'xlsx']:
             # Use pandas for tabular data
             if file_extension == 'csv'
                 df = pd.read_csv(uploaded_file)
@@ -257,6 +257,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
