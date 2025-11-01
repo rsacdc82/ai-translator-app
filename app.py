@@ -94,7 +94,10 @@ def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
         return None
         
     return text_content            # Use pypdf to read the PDF
-            reader = pypdf.PdfReader(uploaded_file)
+    def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
+    if uploaded_file.name.endswith(".pdf"):
+        # 8 SPACES INDENTATION
+        reader = pypdf.PdfReader(uploaded_file)
             for page in reader.pages
                 text_content += page.extract_text() or 
         
@@ -254,6 +257,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
