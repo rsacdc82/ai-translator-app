@@ -40,7 +40,7 @@ def translate_text_with_gemini(api_key: str, text: str, target_language: str) ->
 
 def translate_text_with_gemini(api_key: str, text: str, target_language: str) -> Optional[str]:
     if not text:
-    return None
+        return None
     try:
         client = genai.Client(api_key=api_key)
         prompt = f"Translate the following text into {target_language}.\n\nText: {text}"
@@ -248,6 +248,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
