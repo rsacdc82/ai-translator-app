@@ -34,21 +34,24 @@ ALLOWED_EXTENSIONS = ['pdf', 'txt', 'csv', 'xlsx']
 def translate_text_with_gemini(api_key: str, text: str, target_language: str) -> Optional[str]:
     # ... checks ...
     try:
-        # All lines below MUST be indented relative to the 'try:' line.
+      
         client = genai.Client(api_key=api_key)
-        
-        # CORRECT INDENTATION for the prompt definition
-        prompt = f"Translate the following text into {target_language}.\n\nText: {text}" 
+      
 
-        response = client.models.generate_content(
+def translate_text_with_gemini(api_key: str, text: str, target_language: str) -> Optional[str]:
+    if not text:
+    return None
+    try:
+        client = genai.Client(api_key=api_key)
+        prompt = f"Translate the following text into {target_language}.\n\nText: {text}"
+        response = client.models.generate_content( # <-- Line 47 needs 8 spaces here
             model="gemini-2.5-flash",
             contents=prompt
         )
-       response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
-        )
-        return response.text 
+        return response.text
+    except Exception as e:
+    t.error(f"An API error occurred: {e}")
+    return None
         
     except Exception as e:
         return response.text.strip()
@@ -245,6 +248,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
