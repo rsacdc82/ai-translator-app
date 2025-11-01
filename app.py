@@ -114,7 +114,7 @@ def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
         text_content = df.to_csv(sep='\t', index=False, header=True)
             
             # Convert DataFrame to a single string for translation (simple approach)
-            text_content = df.to_string(index=False)
+        text_content = df.to_string(index=False)
             st.warning(For large or complex tables, the simple text representation might lose formatting. Consider translating sections or columns for better results.)
         
         else
@@ -262,6 +262,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
