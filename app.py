@@ -32,20 +32,23 @@ LANGUAGE_CODES: Dict[str, str] = {
 ALLOWED_EXTENSIONS = ['pdf', 'txt', 'csv', 'xlsx']
 
 def translate_text_with_gemini(api_key: str, text: str, target_language: str) -> Optional[str]:
-    """Uses the Gemini API to translate text."""
-    
-    if not text:  # <-- CORRECT: Add the colon
-        return None
+    # ... checks ...
     try:
-        # Initialize the Gemini client
+        # All lines below MUST be indented relative to the 'try:' line.
         client = genai.Client(api_key=api_key)
+        
+        # CORRECT INDENTATION for the prompt definition
+        prompt = f"Translate the following text into {target_language}.\n\nText: {text}" 
 
-        # Craft a clear prompt for translation
-prompt = f"Translate the following text into {target_language}.\n\nText: {text}"
-        # Call the Gemini API for translation
         response = client.models.generate_content(
-            model='gemini-2.5-flash', # Fast model, great for translation
+            model="gemini-2.5-flash",
             contents=prompt
+        )
+        return response.text
+        
+    except Exception as e:
+        st.error(f"An API error occurred: {e}")
+        return None            contents=prompt
         )
 
         return response.text.strip()
@@ -242,6 +245,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
