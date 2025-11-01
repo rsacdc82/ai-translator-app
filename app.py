@@ -10,11 +10,9 @@ from typing import Dict, Any, Optional
 # --- Configuration and Utility Functions ---
 
 # Define supported languages and their ISO 639-1 codes for gTTS and for display
-# gTTS often uses the simplified two-letter code for the primary language.
-# The Gemini prompt will handle the translation to the full language name.
 LANGUAGE_CODES: Dict[str, str] = {
-    "Spanish": "es",       # <-- Correct: Key : Value
-    "French": "fr",        # <-- Correct: Key : Value
+    "Spanish": "es",
+    "French": "fr",
     "German": "de",
     "Italian": "it",
     "Japanese": "ja",
@@ -32,29 +30,24 @@ LANGUAGE_CODES: Dict[str, str] = {
 ALLOWED_EXTENSIONS = ['pdf', 'txt', 'csv', 'xlsx']
 
 def translate_text_with_gemini(api_key: str, text: str, target_language: str) -> Optional[str]:
+    """Translates text using the Gemini API."""
     if not text:
         return None
     try:
         client = genai.Client(api_key=api_key)
         prompt = f"Translate the following text into {target_language}.\n\nText: {text}"
-        response = client.models.generate_content( # <-- Line 47 needs 8 spaces here
+        
+        # CORRECTED: The function body was redundant and had incorrect indentation
+        response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=prompt
         )
-        return response.text
-  # app.py (around lines 45-47)
-
-    except Exception as e: # <-- Line 45
-        # 4 SPACES OF INDENTATION: Correct the typo to 'st.error'
-        st.error(f"An API error occurred: {e}") 
-        
-        # 4 SPACES OF INDENTATION: The return statement belongs here
-        return None
-        
-    except Exception as e:
+        # CORRECTED: Use .text and strip whitespace
         return response.text.strip()
-    except Exception as e:
-        st.error(f"Translation Error (Gemini API): {e}")
+    
+    # CORRECTED: Fixed incorrect indentation and multiple redundant except blocks
+    except Exception as e: 
+        st.error(f"An API error occurred: {e}")
         return None
 
 def convert_text_to_speech(text: str, lang_code: str) -> Optional[io.BytesIO]:
@@ -64,7 +57,6 @@ def convert_text_to_speech(text: str, lang_code: str) -> Optional[io.BytesIO]:
         return None
         
     try:
-        
         # gTTS object - the 'lang_code' must be a supported ISO 639-1 code
         tts = gTTS(text=text, lang=lang_code, slow=False)
         
@@ -73,149 +65,163 @@ def convert_text_to_speech(text: str, lang_code: str) -> Optional[io.BytesIO]:
         tts.write_to_fp(audio_fp)
         audio_fp.seek(0)
         return audio_fp
+    
+    # CORRECTED: Fixed missing colon in except statement
     except Exception as e:
-        st.error(f"Speech Conversion Error (gTTS) The language code '{lang_code}' might not be supported for speech. Error {e}")
+        st.error(f"Speech Conversion Error (gTTS): The language code '{lang_code}' might not be supported for speech. Error: {e}")
         return None
 
 def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
-    #Extracts text content from various file types.
-    file_extension = uploaded_file.name.split('.')[-1].lower()
-    if uploaded_file.name.endswith(".pdf"):
-        # CORRECT: Complete the assignment by calling the reader function
-        text_content = read_pdf_content(uploaded_file) 
-        
-    elif uploaded_file.name.endswith(".txt"):
-        # You'll need to read text files as strings
-        # Streamlit's UploadedFile object is used as a buffer.
-        text_content = uploaded_file.getvalue().decode("utf-8")
-        
-    else:
-        st.error("Unsupported file type. Please upload a PDF or TXT file.")
-        return None
-        
-    return text_content            # Use pypdf to read the PDF
-    def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
-        if uploaded_file.name.endswith(".pdf"):
-        # 8 SPACES INDENTATION
+    """Extracts text content from various file types (PDF, TXT, CSV, XLSX)."""
+    text_content = "" # Initialize variable
+    
+    try:
+        file_extension = uploaded_file.name.split('.')[-1].lower()
+
+        if file_extension == "pdf":
+            # Use pypdf to read the PDF
             reader = pypdf.PdfReader(uploaded_file)
             for page in reader.pages:
+                # CORRECTED: Added fallback to empty string and fixed indentation
                 text_content += page.extract_text() or ""
-        
-        elif file_extension in ['csv', 'xlsx']:
+            
+        elif file_extension == "txt":
+            # Read text files
+            text_content = uploaded_file.getvalue().decode("utf-8")
+
+        elif file_extension in ['csv', 'xlsx', 'xls']:
             # Use pandas for tabular data
             if file_extension == 'csv':
                 df = pd.read_csv(uploaded_file)
-            elif uploaded_file.name.endswith((".xlsx", ".xls")):
-        # 8 SPACES INDENTATION
-                df = pd.read_excel(uploaded_file) 
+            elif file_extension in ["xlsx", "xls"]:
+                df = pd.read_excel(uploaded_file)
+            
+            # Convert DataFrame to a single string for translation (simple approach)
+            text_content = df.to_string(index=False)
+            
+            # CORRECTED: Fixed f-string quotes and ensures this is inside the elif block
+            st.warning(f"For large or complex tables, the simple text representation might lose formatting. Consider translating sections or columns for better results.")
         
-        # ... logic to convert DataFrame (df) to text content
-        # For example:
-# The line below is assumed to be inside an 'elif uploaded_file.name.endswith((".xlsx", ".xls")):' block
-        text_content = df.to_csv(sep='\t', index=False, header=True)
-        
-        # Convert DataFrame to a single string for translation (simple approach)
-        text_content = df.to_string(index=False)
-        
-        # CORRECTED: Added quotes around the f-string and fixed indentation of st.warning
-        st.warning(f"For large or complex tables, the simple text representation might lose formatting. Consider translating sections or columns for better results.")
-    
-    # CORRECTED: Added colon to 'else' statement and fixed indentation/quotes below it
-    else: 
-        # CORRECTED: Added quotes to the f-string
-        st.error(f"Unsupported file type {file_extension}. Please use a supported format {', '.join(ALLOWED_EXTENSIONS)}")
-        return None
+        # CORRECTED: Aligned else with its corresponding if/elif block
+        else:
+            # CORRECTED: Fixed f-string quotes
+            st.error(f"Unsupported file type: {file_extension}. Please use a supported format: {', '.join(ALLOWED_EXTENSIONS)}")
+            return None
 
-    # CORRECTED: Added colon to 'if' statement and fixed indentation/quotes below it
-    if not text_content: 
-        st.warning("The uploaded file was empty or contained no readable text.")
-        return None
+        # CORRECTED: Fixed missing colon
+        if not text_content:
+            st.warning("The uploaded file was empty or contained no readable text.")
+            return None
 
-    return text_content
+        return text_content
     
-# CORRECTED: Added colon to 'except' statement
-except Exception as e:
-    # CORRECTED: Added quotes to the f-string
-    st.error(f"File Processing Error: Could not read the file. Error: {e}")
-    return None
+    # CORRECTED: Aligned except with its corresponding try block and fixed f-string quotes
+    except Exception as e:
+        st.error(f"File Processing Error: Could not read the file. Error: {e}")
+        return None
 
 # --- Streamlit Application Layout ---
 
-def main()
-    st.set_page_config(page_title=Universal AI Translator & Speaker, layout=wide)
-    st.title(Universal AI Translator & Speaker)
+# CORRECTED: Added colon to function definition
+def main():
+    # CORRECTED: Added quotes around string arguments
+    st.set_page_config(page_title="Universal AI Translator & Speaker", layout="wide")
+    st.title("Universal AI Translator & Speaker")
     st.markdown(
-        Translate text instantly using the power of Google Gemini, then convert the translation to speech and download the audio!
+        "Translate text instantly using the power of Google Gemini, then convert the translation to speech and download the audio!"
     )
     st.divider()
 
     # Sidebar for API Key and setup
-    with st.sidebar
-        st.header(Setup & Configuration)
+    # CORRECTED: Added colon to 'with' statement
+    with st.sidebar:
+        st.header("Setup & Configuration")
         # Get the API key from the user
+        # CORRECTED: Added quotes around string arguments
         gemini_api_key = st.text_input(
-            Enter your Gemini API Key,
-            type=password,
-            help=Get your key from Google AI Studio.
+            "Enter your Gemini API Key",
+            type="password",
+            help="Get your key from Google AI Studio."
         )
-        if gemini_api_key
-             st.success(API Key successfully entered.)
-        else
-             st.error(Please enter your Gemini API Key to proceed.)
         
-        st.header(Upload or Input)
+        # CORRECTED: Added colon to if/else blocks and fixed indentation
+        if gemini_api_key:
+            st.success("API Key successfully entered.")
+        else:
+            st.error("Please enter your Gemini API Key to proceed.")
+            
+        st.header("Upload or Input")
         # Option to upload a file
+        # CORRECTED: Added quotes around string arguments
         uploaded_file = st.file_uploader(
-            Upload a File for Translation, 
+            "Upload a File for Translation", 
             type=ALLOWED_EXTENSIONS
         )
 
     # Main application logic
-    if not gemini_api_key
+    # CORRECTED: Added colon
+    if not gemini_api_key:
         st.stop() # Stop execution if the key is missing
 
     # --- Input Section ---
-    st.header(1. Input Text or File Content)
+    st.header("1. Input Text or File Content")
     
-    source_text = 
-    if uploaded_file
-        with st.spinner(fExtracting text from {uploaded_file.name}...)
+    source_text = "" # Initialize source_text
+    
+    # CORRECTED: Added colon and fixed indentation
+    if uploaded_file:
+        # CORRECTED: Fixed f-string quotes
+        with st.spinner(f"Extracting text from {uploaded_file.name}..."):
+            # CORRECTED: Fixed indentation
             source_text = extract_text_from_uploaded_file(uploaded_file)
         
-        if source_text
-            st.text_area(
-                Extracted Text (You can edit this), 
+        # CORRECTED: Added colon and fixed indentation
+        if source_text:
+            # CORRECTED: Fixed string arguments
+            source_text = st.text_area(
+                "Extracted Text (You can edit this)", 
                 source_text, 
                 height=250, 
-                key=source_text_area
+                key="source_text_area"
             )
-        else
+        # CORRECTED: Added colon and fixed indentation
+        else:
             # If extraction failed, allow manual entry as fallback
-            st.text_area(Enter Text for Translation, , height=250, key=source_text_area)
-    else
+            # CORRECTED: Fixed string arguments
+            source_text = st.text_area("Enter Text for Translation", "", height=250, key="source_text_area")
+    # CORRECTED: Added colon and fixed indentation
+    else:
         # Default manual entry if no file is uploaded
-        source_text = st.text_area(Enter Text for Translation, , height=250, key=source_text_area)
+        # CORRECTED: Fixed string arguments
+        source_text = st.text_area("Enter Text for Translation", "", height=250, key="source_text_area")
 
     # Update source_text from the text area if a file was uploaded but text was edited
-    source_text = st.session_state.source_text_area if source_text_area in st.session_state else source_text
+    # CORRECTED: Ensure st.session_state is checked consistently
+    if "source_text_area" in st.session_state:
+        source_text = st.session_state.source_text_area
 
     # --- Translation and Action Section ---
-    st.header(2. Choose Language & Action)
+    st.header("2. Choose Language & Action")
     col1, col2, col3 = st.columns([1.5, 1.5, 1])
     
+    # CORRECTED: Fixed string arguments
     target_language_name = col1.selectbox(
-        Select Target Language, 
+        "Select Target Language", 
         options=list(LANGUAGE_CODES.keys())
     )
     
     target_lang_code = LANGUAGE_CODES.get(target_language_name, 'en') # Default to English code
     
     # Button to trigger the translation and speech process
-    if col2.button(Translate & Generate Speech, use_container_width=True)
-        if not source_text or source_text.isspace()
-            st.error(Please enter or upload some text to translate.)
-        else
-            with st.spinner(fTranslating to {target_language_name} and generating audio...)
+    # CORRECTED: Added colon and fixed string arguments
+    if col2.button("Translate & Generate Speech", use_container_width=True):
+        # CORRECTED: Added colon
+        if not source_text or source_text.isspace():
+            st.error("Please enter or upload some text to translate.")
+        # CORRECTED: Added colon
+        else:
+            # CORRECTED: Fixed f-string quotes
+            with st.spinner(f"Translating to {target_language_name} and generating audio..."):
                 
                 # 1. Translate
                 translated_text = translate_text_with_gemini(
@@ -224,7 +230,8 @@ def main()
                     target_language=target_language_name
                 )
                 
-                if translated_text
+                # CORRECTED: Added colon
+                if translated_text:
                     # Store the result in session state for display and speech
                     st.session_state['translated_text'] = translated_text
                     
@@ -236,73 +243,42 @@ def main()
 
 # --- Output Section ---
 
-    st.header(3. Results)
+    st.header("3. Results")
     
-    if 'translated_text' in st.session_state and st.session_state['translated_text']
+    # CORRECTED: Fixed indentation
+    if 'translated_text' in st.session_state and st.session_state['translated_text']:
         translated_text = st.session_state['translated_text']
         audio_bytes_io = st.session_state.get('audio_bytes_io')
         target_language_name = st.session_state['target_language_name']
         target_lang_code = st.session_state['target_lang_code']
 
         # Display the translated text
-        st.subheader(Translated Text ({target_language_name}))
+        # CORRECTED: Fixed f-string quotes
+        st.subheader(f"Translated Text ({target_language_name})")
         st.success(translated_text)
 
         # Display the audio player
-        if audio_bytes_io
-            st.subheader(Audio Playback)
+        # CORRECTED: Added colon
+        if audio_bytes_io:
+            st.subheader("Audio Playback")
             # Use the audio object in Streamlit
-            st.audio(audio_bytes_io.getvalue(), format='audiomp3')
+            st.audio(audio_bytes_io.getvalue(), format='audio/mp3')
 
             # Button to download the audio file
-            st.subheader(Download Audio)
+            st.subheader("Download Audio")
             audio_bytes_io.seek(0) # Reset pointer for download
+            # CORRECTED: Fixed f-string quotes and mime type
             st.download_button(
-                label=fDownload {target_language_name} Speech (MP3),
+                label=f"Download {target_language_name} Speech (MP3)",
                 data=audio_bytes_io.read(),
-                file_name=ftranslated_speech_{target_lang_code}.mp3,
-                mime=audiomp3,
+                file_name=f"translated_speech_{target_lang_code}.mp3",
+                mime="audio/mp3",
                 use_container_width=True
             )
-        else
-             st.warning(Speech could not be generated for this translation.)
+        # CORRECTED: Added colon
+        else:
+            st.warning("Speech could not be generated for this translation.")
 
-if __name__ == __main__
-
+# CORRECTED: Added colon
+if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
