@@ -123,7 +123,7 @@ def main()
 
     # Sidebar for API Key and setup
     with st.sidebar
-        st.header(🔑 Setup & Configuration)
+        st.header(Setup & Configuration)
         # Get the API key from the user
         gemini_api_key = st.text_input(
             Enter your Gemini API Key,
@@ -183,7 +183,7 @@ def main()
     target_lang_code = LANGUAGE_CODES.get(target_language_name, 'en') # Default to English code
     
     # Button to trigger the translation and speech process
-    if col2.button(✨ Translate & Generate Speech, use_container_width=True)
+    if col2.button(Translate & Generate Speech, use_container_width=True)
         if not source_text or source_text.isspace()
             st.error(Please enter or upload some text to translate.)
         else
@@ -217,17 +217,17 @@ def main()
         target_lang_code = st.session_state['target_lang_code']
 
         # Display the translated text
-        st.subheader(f✅ Translated Text ({target_language_name}))
+        st.subheader(Translated Text ({target_language_name}))
         st.success(translated_text)
 
         # Display the audio player
         if audio_bytes_io
-            st.subheader(🔊 Audio Playback)
+            st.subheader(Audio Playback)
             # Use the audio object in Streamlit
             st.audio(audio_bytes_io.getvalue(), format='audiomp3')
 
             # Button to download the audio file
-            st.subheader(⬇️ Download Audio)
+            st.subheader(Download Audio)
             audio_bytes_io.seek(0) # Reset pointer for download
             st.download_button(
                 label=fDownload {target_language_name} Speech (MP3),
@@ -242,3 +242,4 @@ def main()
 if __name__ == __main__
 
     main()
+
