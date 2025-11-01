@@ -111,25 +111,33 @@ def extract_text_from_uploaded_file(uploaded_file: Any) -> Optional[str]:
         
         # ... logic to convert DataFrame (df) to text content
         # For example:
+# The line below is assumed to be inside an 'elif uploaded_file.name.endswith((".xlsx", ".xls")):' block
         text_content = df.to_csv(sep='\t', index=False, header=True)
-            
-            # Convert DataFrame to a single string for translation (simple approach)
-        text_content = df.to_string(index=False)
-            st.warning(For large or complex tables, the simple text representation might lose formatting. Consider translating sections or columns for better results.)
         
-        else
-            st.error(fUnsupported file type {file_extension}. Please use a supported format {', '.join(ALLOWED_EXTENSIONS)})
-            return None
-
-        if not text_content
-             st.warning(The uploaded file was empty or contained no readable text.)
-             return None
-
-        return text_content
+        # Convert DataFrame to a single string for translation (simple approach)
+        text_content = df.to_string(index=False)
+        
+        # CORRECTED: Added quotes around the f-string and fixed indentation of st.warning
+        st.warning(f"For large or complex tables, the simple text representation might lose formatting. Consider translating sections or columns for better results.")
     
-    except Exception as e
-        st.error(fFile Processing Error Could not read the file. Error {e})
+    # CORRECTED: Added colon to 'else' statement and fixed indentation/quotes below it
+    else: 
+        # CORRECTED: Added quotes to the f-string
+        st.error(f"Unsupported file type {file_extension}. Please use a supported format {', '.join(ALLOWED_EXTENSIONS)}")
         return None
+
+    # CORRECTED: Added colon to 'if' statement and fixed indentation/quotes below it
+    if not text_content: 
+        st.warning("The uploaded file was empty or contained no readable text.")
+        return None
+
+    return text_content
+    
+# CORRECTED: Added colon to 'except' statement
+except Exception as e:
+    # CORRECTED: Added quotes to the f-string
+    st.error(f"File Processing Error: Could not read the file. Error: {e}")
+    return None
 
 # --- Streamlit Application Layout ---
 
@@ -262,6 +270,7 @@ def main()
 if __name__ == __main__
 
     main()
+
 
 
 
